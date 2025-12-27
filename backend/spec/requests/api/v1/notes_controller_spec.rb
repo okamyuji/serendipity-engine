@@ -330,24 +330,50 @@ RSpec.describe "Api::V1::NotesController", type: :request do
 
   describe "DELETE /api/v1/notes/:id" do
     context "認証済みユーザーの場合" do
-      let!(:note) { create(:note, user: user, project: nil) }
-
       it "ノートを削除する" do
-        skip "トランザクションの問題で一時的にスキップ"
+        note_to_delete = create(:note, user: user, project: nil)
+        note_id = note_to_delete.id
+
+        expect {
+          delete "/api/v1/notes/#{note_id}", headers: auth_headers
+        }.to change { Note.count }.by(-1)
+
+        expect(response).to have_http_status(:no_content)
+        expect(Note.find_by(id: note_id)).to be_nil
       end
 
       it "関連するチャンクも削除する" do
-        skip "トランザクションの問題で一時的にスキップ"
+        note_with_chunks = create(:note, :with_chunks, user: user, project: nil)
+        note_id = note_with_chunks.id
+        chunk_count = note_with_chunks.chunks.count
+
+        expect(chunk_count).to be > 0
+
+        expect {
+          delete "/api/v1/notes/#{note_id}", headers: auth_headers
+        }.to change { Chunk.count }.by(-chunk_count)
+
+        expect(response).to have_http_status(:no_content)
       end
 
       it "関連するコネクションも削除する" do
-        skip "トランザクションの問題で一時的にスキップ"
+        note1 = create(:note, user: user, project: nil)
+        note2 = create(:note, user: user, project: nil)
+        connection = create(:connection, source_note: note1, target_note: note2)
+        note1_id = note1.id
+
+        expect {
+          delete "/api/v1/notes/#{note1_id}", headers: auth_headers
+        }.to change { Connection.count }.by(-1)
+
+        expect(response).to have_http_status(:no_content)
+        expect(Connection.find_by(id: connection.id)).to be_nil
       end
     end
 
     context "他のユーザーのノートの場合" do
       let(:other_user) { create(:user) }
-      let(:other_note) { create(:note, user: other_user) }
+      let!(:other_note) { create(:note, user: other_user) }
 
       it "404エラーを返す（セキュリティ上の理由で存在を隠す）" do
         delete "/api/v1/notes/#{other_note.id}", headers: auth_headers
@@ -356,7 +382,9 @@ RSpec.describe "Api::V1::NotesController", type: :request do
       end
 
       it "ノートを削除しない" do
-        skip "トランザクションの問題で一時的にスキップ"
+        expect {
+          delete "/api/v1/notes/#{other_note.id}", headers: auth_headers
+        }.not_to change { Note.count }
       end
     end
   end

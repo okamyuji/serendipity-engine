@@ -6,6 +6,67 @@ class ConnectionAnalyzer
   TAG_THRESHOLD = 0.5         # タグ共有による関連性
   TEMPORAL_THRESHOLD = 0.4    # 時間的近接性
 
+  def initialize(user = nil)
+    @user = user
+  end
+
+  # グラフ表示用のデータを生成
+  # @param limit [Integer] 取得するノート数の上限
+  # @param min_strength [Float] 最小コネクション強度
+  # @return [Hash] nodes と edges を含むハッシュ
+  def generate_graph_data(limit: 100, min_strength: 0.5)
+    return { nodes: [], edges: [] } unless @user
+
+    # ノートを取得
+    notes = @user.notes
+                 .includes(:project, :tags, :chunks)
+                 .where(archived: false)
+                 .order(updated_at: :desc)
+                 .limit(limit)
+
+    # ノードデータを構築
+    nodes = notes.map do |note|
+      {
+        id: note.id.to_s,
+        type: "note",
+        data: {
+          label: note.title,
+          project: note.project&.name,
+          projectColor: note.project&.color || "#6366f1",
+          tags: note.tags.pluck(:name),
+          accessCount: note.access_count,
+          lastAccessed: note.last_accessed_at&.iso8601,
+          createdAt: note.created_at.iso8601,
+          hasChunks: note.chunks.exists?
+        }
+      }
+    end
+
+    # コネクションを取得
+    note_ids = notes.pluck(:id)
+    connections = Connection.where(source_note_id: note_ids, target_note_id: note_ids)
+                            .where("strength >= ?", min_strength)
+                            .includes(:source_note, :target_note)
+
+    # エッジデータを構築
+    edges = connections.map do |conn|
+      {
+        id: conn.id.to_s,
+        source: conn.source_note_id.to_s,
+        target: conn.target_note_id.to_s,
+        type: "smoothstep",
+        data: {
+          strength: conn.strength,
+          connectionType: conn.connection_type,
+          aiSuggested: conn.ai_suggested,
+          confirmed: conn.confirmed
+        }
+      }
+    end
+
+    { nodes: nodes, edges: edges }
+  end
+
   # ノートの関連性を分析してConnectionを生成
   # @param note [Note] 分析対象のノート
   # @return [Array<Connection>] 生成されたConnectionの配列

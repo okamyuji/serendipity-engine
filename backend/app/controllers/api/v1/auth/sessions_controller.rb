@@ -3,7 +3,6 @@ module Api
     module Auth
       class SessionsController < Devise::SessionsController
         respond_to :json
-        skip_before_action :verify_authenticity_token
 
         def create
           Rails.logger.info "SessionsController#create called"

@@ -16,6 +16,7 @@ frontend/test-results/
 frontend/coverage/
 
 # Docker
+.env
 .env.production
 
 # IDE

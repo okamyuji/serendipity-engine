@@ -1,0 +1,9 @@
+production:
+  daily_discovery:
+    class: DailyDiscoveryJob
+    schedule: "0 6 * * *"  # 毎朝6時（UTC）
+
+development:
+  daily_discovery:
+    class: DailyDiscoveryJob
+    schedule: "0 6 * * *"  # 毎朝6時（UTC）

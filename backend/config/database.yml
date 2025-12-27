@@ -1,0 +1,33 @@
+# PostgreSQL with pgvector via Docker
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
+  port: 5432
+  username: serendipity
+  password: serendipity_dev
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: serendipity_development
+
+test:
+  <<: *default
+  database: serendipity_test
+
+production:
+  primary: &primary_production
+    <<: *default
+    database: serendipity_production
+    username: <%= ENV["DATABASE_USERNAME"] %>
+    password: <%= ENV["DATABASE_PASSWORD"] %>
+    host: <%= ENV["DATABASE_HOST"] %>
+  cache:
+    <<: *primary_production
+    database: serendipity_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: serendipity_production_queue
+    migrations_paths: db/queue_migrate

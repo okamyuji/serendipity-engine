@@ -3,9 +3,14 @@ module Api
     module Auth
       class SessionsController < Devise::SessionsController
         respond_to :json
+        skip_before_action :verify_authenticity_token
 
         def create
+          Rails.logger.info "SessionsController#create called"
+          Rails.logger.info "Params: #{params.inspect}"
+
           user = User.find_for_database_authentication(email: params[:user][:email])
+          Rails.logger.info "User found: #{user.present?}"
 
           if user&.valid_password?(params[:user][:password])
             # JWTトークンを生成
@@ -26,6 +31,10 @@ module Api
               error: "Invalid email or password"
             }, status: :unauthorized
           end
+        rescue => e
+          Rails.logger.error "SessionsController#create error: #{e.message}"
+          Rails.logger.error e.backtrace.join("\n")
+          render json: { error: e.message }, status: :internal_server_error
         end
 
         def destroy

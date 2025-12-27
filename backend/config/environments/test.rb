@@ -6,6 +6,10 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
+  # テスト環境で全てのホストを許可（HostAuthorizationを無効化）
+  config.hosts = []
+  config.host_authorization = { exclude: ->(request) { true } }
+
   # While tests run files are not watched, reloading is not necessary.
   config.enable_reloading = false
 
@@ -23,7 +27,7 @@ Rails.application.configure do
   config.cache_store = :null_store
 
   # Render exception templates for rescuable exceptions and raise for other exceptions.
-  config.action_dispatch.show_exceptions = :rescuable
+  config.action_dispatch.show_exceptions = :none
 
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false

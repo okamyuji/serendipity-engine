@@ -49,6 +49,14 @@ RSpec.configure do |config|
   # FactoryBot
   config.include FactoryBot::Syntax::Methods
 
+  # Devise test helpers
+  config.include Devise::Test::IntegrationHelpers, type: :request
+
+  # リクエストスペックでホストヘッダーを設定（HostAuthorizationエラー回避）
+  config.before(:each, type: :request) do
+    host! "localhost"
+  end
+
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
 

@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :note do
-    association :user
+    user
     project { nil }
     title { Faker::Lorem.sentence }
     content { Faker::Lorem.paragraphs(number: 3).join("\n\n") }

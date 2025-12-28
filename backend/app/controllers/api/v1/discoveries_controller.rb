@@ -13,7 +13,8 @@ module Api
       end
 
       def show
-        @discovery = current_user.discoveries.find(params[:id])
+        # N+1 クエリ対策: 関連データを事前ロード
+        @discovery = current_user.discoveries.includes(:source_note, :target_note).find(params[:id])
         @discovery.update!(viewed: true)
 
         render json: @discovery.as_json(include: { source_note: { only: [ :id, :title, :content ] }, target_note: { only: [ :id, :title, :content ] } })
@@ -37,8 +38,10 @@ module Api
         engine = DiscoveryEngine.new(current_user)
         engine.generate_daily_discoveries
 
-        # 生成された発見を取得
-        discoveries = current_user.discoveries.where("created_at >= ?", Time.current.beginning_of_day)
+        # 生成された発見を取得（N+1 クエリ対策）
+        discoveries = current_user.discoveries
+                                  .includes(:source_note, :target_note)
+                                  .where("created_at >= ?", Time.current.beginning_of_day)
 
         render json: discoveries.as_json(
           include: {

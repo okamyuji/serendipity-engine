@@ -22,15 +22,6 @@ services:
     networks:
       - serendipity-network
 
-  redis:
-    image: redis:7-alpine
-    container_name: serendipity-redis-prod
-    volumes:
-      - redis_data:/data
-    restart: unless-stopped
-    networks:
-      - serendipity-network
-
   backend:
     build:
       context: ./backend
@@ -41,11 +32,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      redis:
-        condition: service_started
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER:-serendipity}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-serendipity_production}
-      REDIS_URL: redis://redis:6379/0
       RAILS_ENV: production
       RAILS_LOG_TO_STDOUT: "true"
       RAILS_SERVE_STATIC_FILES: "true"
@@ -83,7 +71,6 @@ services:
 
 volumes:
   postgres_data:
-  redis_data:
 
 networks:
   serendipity-network:

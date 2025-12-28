@@ -3,6 +3,9 @@
 class DailyDiscoveryJob < ApplicationJob
   queue_as :default
 
+  # 低優先度（バッチ処理）
+  self.priority = 50
+
   # 全ユーザーの日次発見を生成
   def perform
     User.find_each do |user|

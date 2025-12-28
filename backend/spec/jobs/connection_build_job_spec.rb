@@ -36,9 +36,11 @@ RSpec.describe ConnectionBuildJob, type: :job do
 
     context "ノートが存在しない場合" do
       it "エラーを発生させずに終了する" do
+        # discard_onでActiveRecord::RecordNotFoundを無視する設定のため、
+        # エラーは発生せず正常終了する
         expect {
           described_class.perform_now(99999)
-        }.to raise_error(ActiveRecord::RecordNotFound)
+        }.not_to raise_error
       end
     end
 

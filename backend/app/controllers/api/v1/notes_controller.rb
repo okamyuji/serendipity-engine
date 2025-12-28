@@ -24,6 +24,9 @@ module Api
         # ソート
         @notes = @notes.order(updated_at: :desc)
 
+        # N+1 クエリ対策: 関連データを事前ロード
+        @notes = @notes.includes(:project, :tags)
+
         render json: @notes.as_json(
           include: {
             project: { only: [ :id, :name, :color ] },
@@ -36,6 +39,7 @@ module Api
         @note.touch
         AccessLog.create!(user: current_user, note: @note, action_type: "view")
 
+        # N+1 クエリ対策: 関連データを事前ロード済み（set_note で includes を使用）
         render json: @note.as_json(include: { project: { only: [ :id, :name, :color ] }, tags: { only: [ :id, :name, :color ] }, chunks: { only: [ :id, :content, :position ] } })
       end
 
@@ -69,7 +73,8 @@ module Api
       private
 
       def set_note
-        @note = current_user.notes.find(params[:id])
+        # N+1 クエリ対策: 関連データを事前ロード
+        @note = current_user.notes.includes(:project, :tags, :chunks).find(params[:id])
       end
 
       def note_params

@@ -18,14 +18,6 @@ services:
       timeout: 5s
       retries: 5
 
-  redis:
-    image: redis:7-alpine
-    container_name: serendipity-redis
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis_data:/data
-
   backend:
     build:
       context: ./backend
@@ -41,11 +33,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      redis:
-        condition: service_started
     environment:
       DATABASE_URL: postgres://serendipity:serendipity_dev@db:5432/serendipity_development
-      REDIS_URL: redis://redis:6379/0
       RAILS_ENV: development
       OPENAI_API_KEY: ${OPENAI_API_KEY:-sk-your-api-key-here}
       OPENAI_MODEL: text-embedding-3-small
@@ -69,5 +58,4 @@ services:
 
 volumes:
   postgres_data:
-  redis_data:
   bundle_cache:

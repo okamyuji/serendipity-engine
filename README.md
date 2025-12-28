@@ -42,8 +42,8 @@ Rails 8 API + React 18で構築し、pgvectorによるセマンティック検�
 - Ruby 3.3.6
 - Rails 8.1.1 (API mode)
 - PostgreSQL 16 + pgvector
-- Redis 7
 - Solid Queue (Background Jobs)
+- Solid Cache (Caching)
 - Devise + Devise-JWT (Authentication)
 - OpenAI API (Embeddings)
 - Neighbor gem (Vector Search)
@@ -88,8 +88,22 @@ environment:
 または、`.env` ファイルを作成：
 
 ```bash
+# OpenAI API設定
 OPENAI_API_KEY=sk-your-openai-api-key
+
+# Devise JWT設定
 JWT_SECRET_KEY=your-jwt-secret-key
+
+# Puma設定（本番環境）
+WEB_CONCURRENCY=2        # ワーカープロセス数
+RAILS_MAX_THREADS=5      # スレッド数
+
+# Rails環境設定
+RAILS_ENV=production
+RAILS_LOG_LEVEL=info
+
+# データベース設定
+DATABASE_URL=postgresql://user:password@db/serendipity_engine_production
 ```
 
 ### 起動
@@ -182,7 +196,7 @@ docker compose run --rm frontend npm run build
                             │
 ┌─────────────────────────────────────────────────────────────┐
 │                    DATA LAYER                                │
-│  PostgreSQL 16 + pgvector + Redis 7                         │
+│  PostgreSQL 16 + pgvector (+ Solid Queue + Solid Cache)    │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -445,6 +459,69 @@ docker compose -f compose.prod.yml exec backend bundle exec rake solid_queue:sta
 - `SECRET_KEY_BASE`: Railsのシークレットキー（`rails secret`で生成）
 - `JWT_SECRET_KEY`: JWT認証のシークレットキー
 - `OPENAI_API_KEY`: OpenAI APIキー
+
+## Rails 8 ベストプラクティス
+
+このプロジェクトは、Rails 8の推奨構成とベストプラクティスを採用しています。
+
+### Puma設定の最適化
+
+`config/puma.rb`で以下の最適化を実施しています。
+
+- **Workers**: 複数プロセスで並列処理（`WEB_CONCURRENCY`環境変数で制御）
+- **Threads**: スレッドプールによるIO並列性（`RAILS_MAX_THREADS`環境変数で制御）
+- **preload_app!**: アプリケーションを事前ロードしてメモリ効率を向上（Copy-on-Write最適化）
+- **on_worker_boot**: 各Workerで DB接続プールを再確立
+
+```ruby
+# config/puma.rb
+workers Integer(ENV.fetch("WEB_CONCURRENCY", 2))
+threads_count = Integer(ENV.fetch("RAILS_MAX_THREADS", 5))
+threads threads_count, threads_count
+preload_app!
+
+on_worker_boot do
+  ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+end
+```
+
+### N+1クエリ対策
+
+すべてのコントローラーで`includes`を使用して関連データを事前ロードしています。
+
+```ruby
+# 例: NotesController#index
+@notes = current_user.notes.active
+                     .includes(:project, :tags)  # N+1対策
+                     .order(updated_at: :desc)
+```
+
+### Solid Queue/Cache（Rails 8標準）
+
+Redis不要のPostgreSQLベースのジョブキュー・キャッシュシステムを採用しています。
+
+- **Solid Queue**: バックグラウンドジョブ処理（リトライ機能・優先度制御付き）
+- **Solid Cache**: キャッシュストア
+- **単一データベース**: PostgreSQLでリレーショナルデータ、ベクトル検索、ジョブキュー、キャッシュを統合管理
+
+```ruby
+# config/environments/production.rb
+config.cache_store = :solid_cache_store
+config.active_job.queue_adapter = :solid_queue
+config.solid_queue.connects_to = { database: { writing: :queue } }
+```
+
+### Kamalによるデプロイ
+
+Rails 8標準のデプロイツール`Kamal`を使用しています。
+
+```bash
+# デプロイ実行
+bin/kamal deploy
+
+# SSL証明書の自動生成（Let's Encrypt）
+# config/deploy.ymlで設定
+```
 
 ## 参考ドキュメント
 

@@ -3,6 +3,13 @@
 class EmbeddingJob < ApplicationJob
   queue_as :default
 
+  # 高優先度（ユーザーが作成/更新したノートの処理）
+  self.priority = 10
+
+  # リトライ設定（最大3回、指数バックオフ: 3秒、9秒、27秒）
+  retry_on EmbeddingService::EmbeddingError, wait: :polynomially_longer, attempts: 3
+  retry_on Faraday::ConnectionFailed, wait: :polynomially_longer, attempts: 3
+
   # ノートのコンテンツからEmbeddingを生成
   # @param note_id [Integer] ノートID
   def perform(note_id)

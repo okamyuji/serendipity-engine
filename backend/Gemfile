@@ -5,7 +5,7 @@ gem "rails", "~> 8.1.1"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", ">= 5.0"
+gem "puma", ">= 7.2.1"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 # gem "jbuilder"
 
@@ -32,8 +32,14 @@ gem "thruster", require: false
 gem "rack-cors"
 
 # Authentication
-gem "devise"
+gem "devise", ">= 5.0.4"
 gem "devise-jwt"
+
+# Security: pin minimum versions for transitive dependencies with known CVEs
+gem "nokogiri", ">= 1.19.3"
+gem "jwt", ">= 3.2.0"
+gem "faraday", ">= 2.14.2"
+gem "net-imap", ">= 0.6.4.1"
 
 # Vector search with pgvector
 gem "neighbor"

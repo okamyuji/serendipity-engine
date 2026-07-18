@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  security:
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: okamyuji/reusable-workflows/.github/workflows/security-scan.yml@v1
+
+  backend:
+    uses: okamyuji/reusable-workflows/.github/workflows/rails-ci.yml@v1
+    with:
+      working-directory: backend
+      # PostgreSQL(pgvector)前提のテストは共通ワークフロー(MySQLのみ対応)の対象外
+      run-tests: false
+
+  # pgvector入りPostgreSQLサービスコンテナが必要なため caller 側ジョブとして実行する
+  backend-test:
+    runs-on: ubuntu-latest
+    services:
+      db:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: serendipity
+          POSTGRES_PASSWORD: serendipity_dev
+          POSTGRES_DB: serendipity_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U serendipity"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          working-directory: backend
+      - name: Test
+        working-directory: backend
+        env:
+          # specはOpenAI APIをスタブ済みだがEmbeddingServiceの初期化がキー存在を要求する
+          OPENAI_API_KEY: dummy-key-for-ci
+          # devise-jwtの鍵。CIにはmaster.keyが無くcredentials.secret_key_baseがnilになるため明示する
+          JWT_SECRET_KEY: dummy-jwt-secret-for-ci
+        run: |
+          bin/rails db:test:prepare
+          bundle exec rspec
+
+  frontend:
+    uses: okamyuji/reusable-workflows/.github/workflows/node-ci.yml@v1
+    with:
+      working-directory: frontend

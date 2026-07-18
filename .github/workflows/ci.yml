@@ -47,6 +47,8 @@ jobs:
         env:
           # specはOpenAI APIをスタブ済みだがEmbeddingServiceの初期化がキー存在を要求する
           OPENAI_API_KEY: dummy-key-for-ci
+          # devise-jwtの鍵。CIにはmaster.keyが無くcredentials.secret_key_baseがnilになるため明示する
+          JWT_SECRET_KEY: dummy-jwt-secret-for-ci
         run: |
           bin/rails db:test:prepare
           bundle exec rspec

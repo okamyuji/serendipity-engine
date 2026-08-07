@@ -13,6 +13,8 @@ jobs:
     uses: okamyuji/reusable-workflows/.github/workflows/security-scan.yml@v1
 
   backend:
+    permissions:
+      contents: read
     uses: okamyuji/reusable-workflows/.github/workflows/rails-ci.yml@v1
     with:
       working-directory: backend
@@ -21,6 +23,8 @@ jobs:
 
   # pgvector入りPostgreSQLサービスコンテナが必要なため caller 側ジョブとして実行する
   backend-test:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     services:
       db:
@@ -54,6 +58,8 @@ jobs:
           bundle exec rspec
 
   frontend:
+    permissions:
+      contents: read
     uses: okamyuji/reusable-workflows/.github/workflows/node-ci.yml@v1
     with:
       working-directory: frontend

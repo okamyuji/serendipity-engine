@@ -9,13 +9,13 @@ jobs:
   security:
     permissions:
       contents: read
-    uses: okamyuji/reusable-workflows/.github/workflows/security-scan.yml@v1
+    uses: okamyuji/reusable-workflows/.github/workflows/security-scan.yml@test/ubuntu-26.04
 
   backend:
     permissions:
       contents: read
       pull-requests: write
-    uses: okamyuji/reusable-workflows/.github/workflows/rails-ci.yml@v1
+    uses: okamyuji/reusable-workflows/.github/workflows/rails-ci.yml@test/ubuntu-26.04
     with:
       working-directory: backend
       # PostgreSQL(pgvector)前提のテストは共通ワークフロー(MySQLのみ対応)の対象外
@@ -26,7 +26,7 @@ jobs:
   backend-test:
     permissions:
       contents: read
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     services:
       db:
         image: pgvector/pgvector:pg16
@@ -61,6 +61,6 @@ jobs:
   frontend:
     permissions:
       contents: read
-    uses: okamyuji/reusable-workflows/.github/workflows/node-ci.yml@v1
+    uses: okamyuji/reusable-workflows/.github/workflows/node-ci.yml@test/ubuntu-26.04
     with:
       working-directory: frontend

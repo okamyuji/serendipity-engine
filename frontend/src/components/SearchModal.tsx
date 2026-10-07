@@ -49,7 +49,7 @@ export const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
     if (!isOpen) return null
 
     return (
-        <div className="fixed inset-0 z-50 flex items-start justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4 pt-20">
+        <div className="fixed inset-0 z-50 flex items-start justify-center bg-black bg-opacity-50 backdrop-blur-xs p-4 pt-20">
             <div className="bg-white w-full max-w-2xl max-h-[600px] flex flex-col rounded-2xl shadow-2xl border-2 border-gray-200">
                 <div className="p-4 border-b border-gray-200">
                     <div className="flex items-center space-x-3">
@@ -59,7 +59,7 @@ export const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
                             placeholder="ノートを検索..."
-                            className="flex-1 outline-none text-lg"
+                            className="flex-1 outline-hidden text-lg"
                             autoFocus
                         />
                         {isLoading && <SpinnerIcon className="animate-spin w-5 h-5 text-indigo-600" />}
@@ -100,7 +100,7 @@ export const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
                                             {note.tags && note.tags.length > 0 && (
                                                 <div className="flex flex-wrap gap-1 mt-2">
                                                     {note.tags.map((tag) => (
-                                                        <span key={tag.id} className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700">
+                                                        <span key={tag.id} className="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-gray-100 text-gray-700">
                                                             {tag.name}
                                                         </span>
                                                     ))}

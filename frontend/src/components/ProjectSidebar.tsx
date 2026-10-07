@@ -30,13 +30,13 @@ export const ProjectSidebar = ({ selectedProjectId, onSelectProject }: ProjectSi
 
     return (
         <>
-            <div className="w-64 bg-white border-r border-gray-200 p-4 space-y-2">
+            <div className="w-64 bg-white border-r border-gray-200 p-4 flex flex-col gap-2">
                 <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-bold text-gray-900 flex items-center">
                         <FolderIcon className="w-5 h-5 mr-2" />
                         プロジェクト
                     </h2>
-                    <button onClick={handleCreateProject} className="p-1 hover:bg-gray-100 rounded transition-colors" title="新規プロジェクト">
+                    <button onClick={handleCreateProject} className="p-1 hover:bg-gray-100 rounded-sm transition-colors" title="新規プロジェクト">
                         <PlusIcon className="w-5 h-5 text-gray-600" />
                     </button>
                 </div>
@@ -64,7 +64,7 @@ export const ProjectSidebar = ({ selectedProjectId, onSelectProject }: ProjectSi
                                 e.stopPropagation()
                                 handleEditProject(project.id)
                             }}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-200 rounded transition-all"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 p-1 hover:bg-gray-200 rounded-sm transition-all"
                             title="編集"
                         >
                             <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

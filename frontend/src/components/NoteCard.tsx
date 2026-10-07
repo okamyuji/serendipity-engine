@@ -31,7 +31,7 @@ export const NoteCard = ({ note, onClick }: NoteCardProps) => {
                     {note.tags.map((tag) => (
                         <span
                             key={tag.id}
-                            className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700"
+                            className="inline-flex items-center px-2 py-0.5 rounded-sm text-xs font-medium bg-gray-100 text-gray-700"
                             style={{ backgroundColor: tag.color ? `${tag.color}20` : undefined }}
                         >
                             {tag.name}

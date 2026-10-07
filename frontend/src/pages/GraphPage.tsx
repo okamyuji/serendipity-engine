@@ -237,7 +237,7 @@ export const GraphPage = () => {
                         <select
                             value={selectedProject || ''}
                             onChange={(e) => setSelectedProject(e.target.value || null)}
-                            className="border border-gray-300 rounded px-1 sm:px-2 py-1"
+                            className="border border-gray-300 rounded-sm px-1 sm:px-2 py-1"
                         >
                             <option value="">すべて</option>
                             {projects.map((project) => (
@@ -256,7 +256,7 @@ export const GraphPage = () => {
                             onChange={(e) =>
                                 setSelectedTags(Array.from(e.target.selectedOptions, (option) => option.value))
                             }
-                            className="border border-gray-300 rounded px-2 py-1 h-8"
+                            className="border border-gray-300 rounded-sm px-2 py-1 h-8"
                         >
                             {tags.map((tag) => (
                                 <option key={tag} value={tag}>
@@ -271,7 +271,7 @@ export const GraphPage = () => {
                             type="checkbox"
                             checked={showOnlyWithChunks}
                             onChange={(e) => setShowOnlyWithChunks(e.target.checked)}
-                            className="rounded"
+                            className="rounded-sm"
                         />
                         <span className="text-gray-700 whitespace-nowrap hidden sm:inline">Embeddingあり</span>
                         <span className="text-gray-700 whitespace-nowrap sm:hidden">EMB</span>

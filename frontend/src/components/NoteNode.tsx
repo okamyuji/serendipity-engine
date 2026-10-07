@@ -44,13 +44,13 @@ export const NoteNode = memo(({ data, selected }: NodeProps<NoteNodeData>) => {
                         {data.tags.slice(0, 2).map((tag, index) => (
                             <span
                                 key={index}
-                                className="text-xs px-2 py-0.5 bg-white bg-opacity-20 rounded-full truncate max-w-[80px]"
+                                className="text-xs px-2 py-0.5 bg-white/20 rounded-full truncate max-w-[80px]"
                             >
                                 {tag}
                             </span>
                         ))}
                         {data.tags.length > 2 && (
-                            <span className="text-xs px-2 py-0.5 bg-white bg-opacity-20 rounded-full">
+                            <span className="text-xs px-2 py-0.5 bg-white/20 rounded-full">
                                 +{data.tags.length - 2}
                             </span>
                         )}

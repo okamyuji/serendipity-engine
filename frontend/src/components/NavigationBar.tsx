@@ -38,7 +38,7 @@ export const NavigationBar = () => {
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center space-x-8">
                         <Link to="/notes" className="flex items-center space-x-2">
-                            <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                            <div className="w-8 h-8 bg-linear-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
                                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                                 </svg>
@@ -72,7 +72,7 @@ export const NavigationBar = () => {
                         >
                             <SearchIcon className="w-4 h-4" />
                             <span>検索</span>
-                            <kbd className="hidden sm:inline-block px-2 py-0.5 text-xs font-semibold text-gray-500 bg-gray-100 border border-gray-300 rounded">⌘K</kbd>
+                            <kbd className="hidden sm:inline-block px-2 py-0.5 text-xs font-semibold text-gray-500 bg-gray-100 border border-gray-300 rounded-sm">⌘K</kbd>
                         </button>
                         <span className="text-sm text-gray-600">{user?.email}</span>
                         <button onClick={handleLogout} className="text-sm text-gray-600 hover:text-gray-900 transition-colors flex items-center">

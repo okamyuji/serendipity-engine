@@ -41,7 +41,7 @@ export const LoginPage = () => {
             <div className="w-full max-w-md">
                 {/* ロゴ・ヘッダー */}
                 <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl mb-4 shadow-lg">
+                    <div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-br from-blue-600 to-indigo-600 rounded-2xl mb-4 shadow-lg">
                         <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
@@ -130,7 +130,7 @@ export const LoginPage = () => {
                         <p className="text-xs font-semibold text-blue-900 mb-2">💡 テストアカウント</p>
                         <p className="text-xs text-blue-700">
                             バックエンドで新規ユーザー登録が必要です。<br />
-                            <code className="bg-blue-100 px-1 py-0.5 rounded">POST /api/v1/auth/signup</code> でユーザーを作成してください。
+                            <code className="bg-blue-100 px-1 py-0.5 rounded-sm">POST /api/v1/auth/signup</code> でユーザーを作成してください。
                         </p>
                     </div>
                 </div>

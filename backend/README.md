@@ -5,7 +5,7 @@ Rails 8 API + PostgreSQL + pgvector で構築されたバックエンドアプ�
 ## 技術スタック
 
 - **Rails 8.1.1**: API フレームワーク（API-only mode）
-- **Ruby 3.3.6**: プログラミング言語
+- **Ruby 3.3.12**: プログラミング言語
 - **PostgreSQL 16**: データベース
 - **pgvector**: ベクトル検索拡張
 - **Devise + Devise-JWT**: 認証システム

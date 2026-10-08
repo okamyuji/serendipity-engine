@@ -1,7 +1,7 @@
 # ============================================
 # Stage 1: 依存関係のインストール
 # ============================================
-FROM ruby:3.3.6-slim AS deps
+FROM ruby:3.3.12-slim AS deps
 
 # 必要なパッケージをインストール
 RUN apt-get update -qq && apt-get install -y \
@@ -20,7 +20,7 @@ RUN bundle config set --local deployment 'true' && \
 # ============================================
 # Stage 2: 本番環境
 # ============================================
-FROM ruby:3.3.6-slim AS production
+FROM ruby:3.3.12-slim AS production
 
 # ランタイムに必要なパッケージのみインストール
 RUN apt-get update -qq && apt-get install -y \
@@ -53,7 +53,7 @@ CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
 # ============================================
 # Stage 3: 開発環境
 # ============================================
-FROM ruby:3.3.6 AS development
+FROM ruby:3.3.12 AS development
 
 # 開発に必要なパッケージをインストール
 RUN apt-get update -qq && apt-get install -y \

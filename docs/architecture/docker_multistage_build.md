@@ -25,19 +25,19 @@ Serendipity Engineは、開発環境と本番環境の両方に対応したマ�
 ### Stage 1: deps（依存関係のインストール）
 
 ```dockerfile
-FROM ruby:3.3.6-slim AS deps
+FROM ruby:3.3.12-slim AS deps
 ```
 
 このステージでは、本番環境に必要なGemのみをインストールします。
 
-- `ruby:3.3.6-slim`を使用してベースイメージを最小化
+- `ruby:3.3.12-slim`を使用してベースイメージを最小化
 - `bundle config set --local deployment 'true'`で本番モード
 - `bundle config set --local without 'development test'`で開発・テスト用Gemを除外
 
 ### Stage 2: production（本番環境）
 
 ```dockerfile
-FROM ruby:3.3.6-slim AS production
+FROM ruby:3.3.12-slim AS production
 ```
 
 このステージでは、ランタイムに必要な最小限のパッケージのみをインストールします。
@@ -49,12 +49,12 @@ FROM ruby:3.3.6-slim AS production
 ### Stage 3: development（開発環境）
 
 ```dockerfile
-FROM ruby:3.3.6 AS development
+FROM ruby:3.3.12 AS development
 ```
 
 このステージでは、開発に必要なすべてのツールをインストールします。
 
-- フルサイズの`ruby:3.3.6`イメージ
+- フルサイズの`ruby:3.3.12`イメージ
 - ビルドツール（`build-essential`）
 - 開発・テスト用Gem
 - ホットリロード対応

@@ -7,6 +7,8 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    // Node 25 以降の組み込み localStorage が jsdom のものを隠し、--localstorage-file なしでは undefined になるため
+    execArgv: ['--no-experimental-webstorage'],
     setupFiles: './src/test/setup.ts',
     css: true,
     exclude: ['**/node_modules/**', '**/dist/**', '**/e2e/**', '**/.{idea,git,cache,output,temp}/**'],

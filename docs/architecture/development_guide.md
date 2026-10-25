@@ -152,7 +152,7 @@ docker-compose run --rm backend bundle exec rspec
 
 ```bash
 cd frontend
-npm test
+pnpm test
 ```
 
 ### コードレビュー
@@ -430,13 +430,13 @@ describe('NoteCard', () => {
 
 ```bash
 cd frontend
-npm run lint
+pnpm run lint
 ```
 
 自動修正する場合は以下のコマンドを実行します。
 
 ```bash
-npm run lint:fix
+pnpm exec eslint . --fix
 ```
 
 ## デバッグ

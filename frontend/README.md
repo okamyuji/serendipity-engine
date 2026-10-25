@@ -34,33 +34,33 @@ src/
 ### ローカル開発
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 ### テスト
 
 ```bash
 # テスト実行
-npm test
+pnpm test
 
 # テストUI
-npm run test:ui
+pnpm run test:ui
 
 # カバレッジ
-npm run test:coverage
+pnpm run test:coverage
 ```
 
 ### Lint
 
 ```bash
-npm run lint
+pnpm run lint
 ```
 
 ### ビルド
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 ## Docker

@@ -64,24 +64,23 @@ FROM ruby:3.4.11 AS development
 ### Stage 1: deps（依存関係のインストール）
 
 ```dockerfile
-FROM node:20-alpine AS deps
+FROM node:22-alpine AS deps
 ```
 
-このステージでは、本番環境に必要なnpmパッケージのみをインストールします。
+このステージでは、本番環境に必要なパッケージのみをインストールします。
 
-- `npm ci --omit=dev`で本番用依存関係のみ
-- `npm cache clean --force`でキャッシュを削除
+- `pnpm install --frozen-lockfile --prod`で本番用依存関係のみ
 
 ### Stage 2: builder（ビルド）
 
 ```dockerfile
-FROM node:20-alpine AS builder
+FROM node:22-alpine AS builder
 ```
 
 このステージでは、アプリケーションをビルドします。
 
 - すべての依存関係をインストール（開発用も含む）
-- `npm run build`で本番用ビルドを実行
+- `pnpm run build`で本番用ビルドを実行
 - `/app/dist`に静的ファイルを生成
 
 ### Stage 3: production（本番環境）
@@ -100,7 +99,7 @@ FROM nginx:alpine AS production
 ### Stage 4: development（開発環境）
 
 ```dockerfile
-FROM node:20-alpine AS development
+FROM node:22-alpine AS development
 ```
 
 このステージでは、Vite開発サーバーを起動します。

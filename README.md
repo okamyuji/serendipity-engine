@@ -153,16 +153,16 @@ docker compose exec backend bundle exec rails db:migrate
 
 ```bash
 # テスト実行
-docker compose run --rm frontend npm test
+docker compose run --rm frontend pnpm test
 
 # Lint
-docker compose run --rm frontend npm run lint
+docker compose run --rm frontend pnpm run lint
 
 # E2Eテスト
-docker compose run --rm frontend npx playwright test
+docker compose run --rm frontend pnpm exec playwright test
 
 # ビルド
-docker compose run --rm frontend npm run build
+docker compose run --rm frontend pnpm run build
 ```
 
 ## アーキテクチャ
@@ -368,13 +368,13 @@ docker compose exec backend COVERAGE=true bundle exec rspec
 
 ```bash
 # Unit/Integration テスト
-docker compose run --rm frontend npm test
+docker compose run --rm frontend pnpm test
 
 # E2Eテスト
-docker compose run --rm frontend npx playwright test
+docker compose run --rm frontend pnpm exec playwright test
 
 # E2Eテスト（UIモード）
-docker compose run --rm frontend npx playwright test --ui
+docker compose run --rm frontend pnpm exec playwright test --ui
 ```
 
 ## Docker マルチステージビルド

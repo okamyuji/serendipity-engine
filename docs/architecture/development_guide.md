@@ -436,7 +436,7 @@ pnpm run lint
 自動修正する場合は以下のコマンドを実行します。
 
 ```bash
-pnpm exec eslint . --fix
+pnpm exec oxlint . --fix
 ```
 
 ## デバッグ

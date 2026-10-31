@@ -2,9 +2,6 @@
 minimumReleaseAge: 10080
 # 7日未満の版の例外。1版ずつ書き、7日を過ぎたら消す
 minimumReleaseAgeExclude:
-  - "@babel/helper-string-parser@7.29.11"
-  - "@babel/parser@7.29.11"
-  - "@babel/types@7.29.11"
   - "@oxc-project/types@0.155.0"
   - "@rolldown/binding-android-arm-eabi@1.2.15"
   - "@rolldown/binding-android-arm64@1.2.15"
@@ -23,32 +20,13 @@ minimumReleaseAgeExclude:
   - "@rolldown/binding-win32-x64-msvc@1.2.15"
   - "@tanstack/query-core@5.104.5"
   - "@tanstack/react-query@5.104.5"
-  - "@typescript-eslint/eslint-plugin@8.72.0"
-  - "@typescript-eslint/parser@8.72.0"
-  - "@typescript-eslint/project-service@8.72.0"
-  - "@typescript-eslint/scope-manager@8.72.0"
-  - "@typescript-eslint/tsconfig-utils@8.72.0"
-  - "@typescript-eslint/type-utils@8.72.0"
-  - "@typescript-eslint/types@8.72.0"
-  - "@typescript-eslint/typescript-estree@8.72.0"
-  - "@typescript-eslint/utils@8.72.0"
-  - "@typescript-eslint/visitor-keys@8.72.0"
-  - baseline-browser-mapping@2.11.32
-  - browserslist@4.29.4
-  - caniuse-lite@1.0.30001819
-  - electron-to-chromium@1.5.464
-  - ignore@7.0.14
-  - node-releases@2.0.60
   - postcss@8.5.31
   - react-hook-form@7.91.0
   - rolldown@1.2.15
   - set-cookie-parser@2.7.3
   - tldts-core@7.4.19
   - tldts@7.4.19
-  - typescript-eslint@8.72.0
   - vite@8.3.5
   - zustand@5.0.16
-  - minimatch@11.0.3
-  - "@isaacs/nonrecursive-glob-match@1.0.3"
 overrides:
   "minimatch@>=10.0.0 <11.0.1": ^11.0.3

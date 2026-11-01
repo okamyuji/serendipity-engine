@@ -8,7 +8,7 @@ WORKDIR /app
 # corepackはpackageManagerの版のpnpmを使う
 RUN corepack enable
 
-# 7日ルール(pnpm-workspace.yaml)をイメージ内でも効かせるため、一緒にコピーする
+# 3日ルール(pnpm-workspace.yaml)をイメージ内でも効かせるため、一緒にコピーする
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
 # 依存関係をインストール（本番用）

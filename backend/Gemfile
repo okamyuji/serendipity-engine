@@ -1,5 +1,5 @@
-source "https://rubygems.org"
-
+# Dependabot の cooldown は Bundler の解決に渡らず、推移的な gem には効かないので、Bundler 自身の待機をかける
+source "https://rubygems.org", cooldown: 3
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.1.4"
 # Use postgresql as the database for Active Record
@@ -36,7 +36,7 @@ gem "devise", ">= 5.0.4"
 gem "devise-jwt"
 
 # Security: pin minimum versions for transitive dependencies with known CVEs
-gem "nokogiri", ">= 1.19.3"
+gem "nokogiri", ">= 1.19.5"
 gem "jwt", ">= 3.2.0"
 gem "faraday", ">= 2.14.2"
 gem "net-imap", ">= 0.6.4.1"

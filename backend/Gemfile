@@ -36,7 +36,7 @@ gem "devise", ">= 5.0.4"
 gem "devise-jwt"
 
 # Security: pin minimum versions for transitive dependencies with known CVEs
-gem "nokogiri", ">= 1.19.3"
+gem "nokogiri", ">= 1.19.5"
 gem "jwt", ">= 3.2.0"
 gem "faraday", ">= 2.14.2"
 gem "net-imap", ">= 0.6.4.1"

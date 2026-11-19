@@ -39,7 +39,7 @@ Rails 8 API + React 18で構築し、pgvectorによるセマンティック検�
 
 ### Backend
 
-- Ruby 3.4.11
+- Ruby 4.0.10
 - Rails 8.1.1 (API mode)
 - PostgreSQL 16 + pgvector
 - Solid Queue (Background Jobs)
